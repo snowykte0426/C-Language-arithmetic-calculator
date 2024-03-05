@@ -35,25 +35,32 @@ void clearBuffer() {
 FILE* prrecord = fopen("calculation_record.txt", "a");
 char buffer[MAX] = { 0, };
 long long getInt64Input(const char* message) { //정수연산입력용
-    long long input;
+    long long input1;
     printf("%s", message);
-    scanf("%lld", &input);
+    scanf("%lld", &input1);
     clearBuffer();
-    return input;
+    return input1;
 }
 long double getDoubleInput(const char* message) { //실수연산입력용
-    long double input;
+    long double input2;
     printf("%s", message);
-    scanf("%lf", &input);
+    scanf("%lf", &input2);
+    clearBuffer();
+    return input2;
+}
+int getIntInput(const char* message) {
+    int input;
+    printf("%s", message);
+    scanf("%d", &input);
     clearBuffer();
     return input;
 }
 char getCharInput(const char* message) {
-    char input;
+    char input0;
     printf("%s", message);
-    scanf(" %c", &input);
+    scanf(" %c", &input0);
     clearBuffer();
-    return input;
+    return input0;
 }
 void SaveRusultPrint() {
     prrecord = fopen("calculation_record.txt", "r");
@@ -78,7 +85,7 @@ int main() {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
     fopen("calculation_record.txt", "r+");
     fseek(prrecord, 0L, SEEK_END);
-    unsigned char  msync = 1, dsync = 1;
+    unsigned char  msync = 1, dsync = 1, rsync = 1;
     while (true) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);
         printf("정수연산:1/실수연산:2/나머지연산:3\n");
@@ -96,7 +103,7 @@ int main() {
                 printf("계산결과는 '%d'입니다\n", result1);
                 fprintf(prrecord, "%d\n", result1);
                 Sleep(1000);
-            rerollerror_num_p://Reroll Error Number Plus
+                rerollerror_num_p://Reroll Error Number Plus
                 reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
                 if (reroll == 'Y') {
                     n1 = 0, n2 = 0, n3 = 0, n4 = 0, result1 = 0;
@@ -127,12 +134,12 @@ int main() {
                     goto danger_after_minus;
                 }
                 else {
-                danger_after_minus:
+                    danger_after_minus:
                     result1 = n1 - n2 - n3 - n4;
                     printf("계산결과는 '%d'입니다\n", result1);
                     fprintf(prrecord, "%d\n", result1);
                     Sleep(1000);
-                rerollerror_num_ma: //Reroll Error Number Minus
+                    rerollerror_num_ma: //Reroll Error Number Minus
                     reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
                     if (reroll == 'Y') {
                         n1 = 0, n2 = 0, n3 = 0, n4 = 0, result1 = 0;
@@ -161,7 +168,7 @@ int main() {
                 printf("계산결과는 '%d'입니다\n", result1);
                 fprintf(prrecord, "%d\n", result1);
                 Sleep(1000);
-            rerollerror_num_mu://Reroll Error Number Multiplication
+                rerollerror_num_mu://Reroll Error Number Multiplication
                 reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
                 if (reroll == 'Y') {
                     n1 = 0, n2 = 0, n3 = 0, n4 = 0, result1 = 0;
@@ -192,12 +199,12 @@ int main() {
                     goto danger_after_division;
                 }
                 else {
-                danger_after_division:
+                    danger_after_division:
                     result1 = n1 / n2 / n3 / n4;
                     printf("계산결과는 '%d'입니다\n", result1);
                     fprintf(prrecord, "%d\n", result1);
                     Sleep(1000);
-                rerollerror_num_d://Reroll Error Number Division
+                    rerollerror_num_d://Reroll Error Number Division
                     reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
                     if (reroll == 'Y') {
                         n1 = 0, n2 = 0, n3 = 0, n4 = 0, result1 = 0;
@@ -222,84 +229,55 @@ int main() {
             }
             }
         }
-            if (calculationType == 2) {
-                f1 = getDoubleInput("첫 번째 숫자를 입력하세요: ");
-                f2 = getDoubleInput("두 번째 숫자를 입력하세요: ");
-                f3 = getDoubleInput("세 번째 숫자를 입력하세요: ");
-                f4 = getDoubleInput("네 번째 숫자를 입력하세요: ");
-                op = getCharInput("연산자를 입력하세요 (+, -, *, /): ");
-                switch (op) {
-                case '+': {
-                    result2 = f1 + f2 + f3 + f4;
-                    printf("계산결과는 '%lld'입니다\n", result2);
-                    fprintf(prrecord, "%lld\n", result2);
-                    Sleep(1000);
-                    rerollerror_fl_p://Reroll Error Float Plus
-                    reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
-                    if (reroll == 'Y') {
-                        f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
-                        calculationType = 0, op = 0, reroll = 0;
-                        continue;
-                    }
-                    else if (reroll == 'N') {
-                        printf("프로그램을 종료합니다\n");
-                        fclose(prrecord);
-                        exit(0);
-                    }
-                    else {
-                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                        printf("------------------\n");
-                        printf("잘못된 값을 입력하셨습니다\n'Y'또는'N'를 입력해주세요\n(반드시 대문자 N,Y를 입력해주세요)\n");
-                        printf("------------------\n");
-                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
-                        reroll = 0;
-                        goto rerollerror_fl_p;//Reroll Error Float Plus
-                    }
+        if (calculationType == 2) {
+            f1 = getDoubleInput("첫 번째 숫자를 입력하세요: ");
+            f2 = getDoubleInput("두 번째 숫자를 입력하세요: ");
+            f3 = getDoubleInput("세 번째 숫자를 입력하세요: ");
+            f4 = getDoubleInput("네 번째 숫자를 입력하세요: ");
+            op = getCharInput("연산자를 입력하세요 (+, -, *, /): ");
+            switch (op) {
+            case '+': {
+                result2 = f1 + f2 + f3 + f4;
+                printf("계산결과는 '%lf'입니다\n", result2);
+                fprintf(prrecord, "%lf\n", result2);
+                Sleep(1000);
+                rerollerror_fl_p://Reroll Error Float Plus
+                reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
+                if (reroll == 'Y') {
+                    f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
+                    calculationType = 0, op = 0, reroll = 0;
+                    continue;
                 }
-                case '-': {
-                    if (msync == 1) {
-                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                        printf("------------------\n뺄셈은 첫번째 숫자부터 네번째 숫자까지 차례대로 계산됩니다\nEx)[숫자1] - [숫자2] - [숫자3] - [숫자4]\n------------------\n");
-                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
-                        msync++;
-                        goto danger_after_minus_2;
-                    }
-                    else {
-                    danger_after_minus_2:
-                        result2 = f1 - f2 - f3 - f4;
-                        printf("계산결과는 '%lld'입니다\n", result1);
-                        fprintf(prrecord, "%lld\n", result1);
-                        Sleep(1000);
+                else if (reroll == 'N') {
+                    printf("프로그램을 종료합니다\n");
+                    fclose(prrecord);
+                    exit(0);
+                }
+                else {
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                    printf("------------------\n");
+                    printf("잘못된 값을 입력하셨습니다\n'Y'또는'N'를 입력해주세요\n(반드시 대문자 N,Y를 입력해주세요)\n");
+                    printf("------------------\n");
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                    reroll = 0;
+                    goto rerollerror_fl_p;//Reroll Error Float Plus
+                }
+            }
+            case '-': {
+                if (msync == 1) {
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                    printf("------------------\n뺄셈은 첫번째 숫자부터 네번째 숫자까지 차례대로 계산됩니다\nEx)[숫자1] - [숫자2] - [숫자3] - [숫자4]\n------------------\n");
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                    msync++;
+                    goto danger_after_minus_2;
+                }
+                else {
+                danger_after_minus_2:
+                    result2 = f1 - f2 - f3 - f4;
+                    printf("계산결과는 '%lf'입니다\n", result1);
+                    fprintf(prrecord, "%lf\n", result1);
+                    Sleep(1000);
                     rerollerror_fl_ma: //Reroll Error Float Minus
-                        reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
-                        if (reroll == 'Y') {
-                            f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
-                            calculationType = 0, op = 0, reroll = 0;
-                            continue;
-                        }
-                        else if (reroll == 'N') {
-                            printf("프로그램을 종료합니다\n");
-                            fclose(prrecord);
-                            exit(0);
-                        }
-                        else {
-                            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                            printf("------------------\n");
-                            printf("잘못된 값을 입력하셨습니다\n'Y'또는'N'를 입력해주세요\n(반드시 대문자 N,Y를 입력해주세요)\n");
-                            printf("------------------\n");
-                            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
-                            reroll = 0;
-                            goto rerollerror_fl_ma;//Reroll Error Float Minus
-                        }
-                    }
-
-                }
-                case '*': {
-                    result2 = f1 * f2 * f3 * f4;
-                    printf("계산결과는 '%lld'입니다\n", result2);
-                    fprintf(prrecord, "%lld\n", result1);
-                    Sleep(1000);
-                rerollerror_float_mu://Reroll Error Float Multiplication
                     reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
                     if (reroll == 'Y') {
                         f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
@@ -318,27 +296,102 @@ int main() {
                         printf("------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         reroll = 0;
-                        goto rerollerror_float_mu;//Reroll Error Float Multiplication
+                        goto rerollerror_fl_ma;//Reroll Error Float Minus
                     }
                 }
-                case'/': {
-                    if (dsync == 1) {
-                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                        printf("------------------\n나눗셈은 첫번째 숫자부터 네번째 숫자까지 차례대로 계산됩니다\nEx)[숫자1] ÷ [숫자2] ÷ [숫자3] ÷ [숫자4]\n------------------\n");
-                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
-                        dsync++;
-                        goto danger_after_division_2;
+
+            }
+            case '*': {
+                result2 = f1 * f2 * f3 * f4;
+                printf("계산결과는 '%lf'입니다\n", result2);
+                fprintf(prrecord, "%lf\n", result1);
+                Sleep(1000);
+                rerollerror_float_mu://Reroll Error Float Multiplication
+                reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
+                if (reroll == 'Y') {
+                    f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
+                    calculationType = 0, op = 0, reroll = 0;
+                    continue;
+                }
+                else if (reroll == 'N') {
+                    printf("프로그램을 종료합니다\n");
+                    fclose(prrecord);
+                    exit(0);
+                }
+                else {
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                    printf("------------------\n");
+                    printf("잘못된 값을 입력하셨습니다\n'Y'또는'N'를 입력해주세요\n(반드시 대문자 N,Y를 입력해주세요)\n");
+                    printf("------------------\n");
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                    reroll = 0;
+                    goto rerollerror_float_mu;//Reroll Error Float Multiplication
+                }
+            }
+            case'/': {
+                if (dsync == 1) {
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                    printf("------------------\n나눗셈은 첫번째 숫자부터 네번째 숫자까지 차례대로 계산됩니다\nEx)[숫자1] ÷ [숫자2] ÷ [숫자3] ÷ [숫자4]\n------------------\n");
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                    dsync++;
+                    goto danger_after_division_2;
+                }
+                else {
+                    danger_after_division_2:
+                    result2 = f1 / f2 / f3 / f4;
+                    printf("계산결과는 '%lf'입니다\n", result2);
+                    fprintf(prrecord, "%lf\n", result2);
+                    Sleep(1000);
+                    rerollerror_float_d://Reroll Error Float Division
+                    reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
+                    if (reroll == 'Y') {
+                        f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
+                        calculationType = 0, op = 0, reroll = 0;
+                        continue;
+                    }
+                    else if (reroll == 'N') {
+                        printf("프로그램을 종료합니다\n");
+                        fclose(prrecord);
+                        exit(0);
                     }
                     else {
-                    danger_after_division_2:
-                        result2 = f1 / f2 / f3 / f4;
-                        printf("계산결과는 '%lld'입니다\n", result2);
-                        fprintf(prrecord, "%lld\n", result2);
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                        printf("------------------\n");
+                        printf("잘못된 값을 입력하셨습니다\n'Y'또는'N'를 입력해주세요\n(반드시 대문자 N,Y를 입력해주세요)\n");
+                        printf("------------------\n");
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                        reroll = 0;
+                        goto rerollerror_float_d;//Reroll Error Float Division
+                    }
+                }
+
+            }
+            }
+        }
+                if (calculationType == 3) {
+                    if (rsync == 1) {
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                        printf("------------------\n나머지연산은 첫번째 숫자부터 네번째 숫자까지 차례대로 계산됩니다\nEx)[숫자1] % [숫자2] % [숫자3] % [숫자4]\n------------------\n");
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                        rsync++;
+                        goto danger_after_reminder;
+                    }
+                    else {
+                        danger_after_reminder:
+                        remainder_num1 = getIntInput("첫번째 숫자를 입력해주세요: ");
+                        remainder_num2 = getIntInput("두번째 숫자를 입력해주세요: ");
+                        remainder_num3 = getIntInput("세번째 숫자를 입력해주세요: ");
+                        remainder_num4 = getIntInput("네번째 숫자를 입력해주세요: ");
                         Sleep(1000);
-                    rerollerror_float_d://Reroll Error Float Division
+                        remainder_result2 = remainder_num1% remainder_num2% remainder_num3% remainder_num4;
+                        remainder_result1 = remainder_num1;
+                        printf("계산결과는 '%d'입니다\n", remainder_num1);
+                        fprintf(prrecord, "%d", remainder_result1);
+                        Sleep(1000);
+                        rerollerror_Remainder://Reroll Error Remainder
                         reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
                         if (reroll == 'Y') {
-                            f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
+                            remainder_num1 = 0, remainder_num2 = 0, remainder_num3 = 0, remainder_num4 = 0, remainder_result1 = 0, remainder_result2 = 0;
                             calculationType = 0, op = 0, reroll = 0;
                             continue;
                         }
@@ -357,10 +410,9 @@ int main() {
                             goto rerollerror_float_d;//Reroll Error Float Division
                         }
                     }
-
                 }
                 }
-            }
+            
+        return 0;
         }
-      return 0;
-    }
+    
