@@ -8,8 +8,8 @@
 #define MAX 1000
 long long result1 = 0, n1 = 0, n2 = 0, n3 = 0, n4 = 0;
 long double result2 = 0, f1 = 0, f2 = 0, f3 = 0, f4 = 0;
-int remainder_result1 = 0, remainder_result2 = 0, remainder_result3 = 0, remainder_result4 = 0, remainder_result5 = 0, remainder_result6 = 0;
-int remainder_num1 = 0, remainder_num2 = 0, remainder_num3 = 0, remainder_num4 = 0;
+int remainder_result1 = 0;
+int remainder_num1 = 0, remainder_num2 = 0;
 char op = 0, calculationType = 0, reroll = 0;
 enum {
     BLACK,
@@ -371,7 +371,7 @@ int main() {
                 if (calculationType == 3) {
                     if (rsync == 1) {
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                        printf("------------------\n나머지연산은 첫번째 숫자부터 네번째 숫자까지 차례대로 계산됩니다\nEx)[숫자1] % [숫자2] % [숫자3] % [숫자4]\n------------------\n");
+                        printf("------------------\n나머지연산은 첫째와 두째 숫자 차례대로 계산됩니다\n양수 정수값을 입력할것을 권장합니다\nEx)[숫자1] %% [숫자2]\n------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         rsync++;
                         goto danger_after_reminder;
@@ -379,19 +379,16 @@ int main() {
                     else {
                         danger_after_reminder:
                         remainder_num1 = getIntInput("첫번째 숫자를 입력해주세요: ");
-                        remainder_num2 = getIntInput("두번째 숫자를 입력해주세요: ");
-                        remainder_num3 = getIntInput("세번째 숫자를 입력해주세요: ");
-                        remainder_num4 = getIntInput("네번째 숫자를 입력해주세요: ");
+                        remainder_num2 = getIntInput("두번째 숫자를 입력해주세요: ");      
                         Sleep(1000);
-                        remainder_result2 = remainder_num1% remainder_num2% remainder_num3% remainder_num4;
-                        remainder_result1 = remainder_num1;
+                        remainder_result1 = remainder_num1 % remainder_num2;
                         printf("계산결과는 '%d'입니다\n", remainder_num1);
                         fprintf(prrecord, "%d", remainder_result1);
                         Sleep(1000);
                         rerollerror_Remainder://Reroll Error Remainder
                         reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
                         if (reroll == 'Y') {
-                            remainder_num1 = 0, remainder_num2 = 0, remainder_num3 = 0, remainder_num4 = 0, remainder_result1 = 0, remainder_result2 = 0;
+                            remainder_num1 = 0, remainder_num2 = 0, remainder_result1 = 0;
                             calculationType = 0, op = 0, reroll = 0;
                             continue;
                         }
