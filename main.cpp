@@ -5,12 +5,13 @@
 #include <Windows.h>
 #include <fcntl.h>
 #include <string.h>
-#define MAX 1000
+#define MAX 11
 long long result1 = 0, n1 = 0, n2 = 0, n3 = 0, n4 = 0;
 long double result2 = 0, f1 = 0, f2 = 0, f3 = 0, f4 = 0;
-int remainder_result1 = 0;
-int remainder_num1 = 0, remainder_num2 = 0;
-char op = 0, calculationType = 0, reroll = 0;
+int remainder_num1 = 0, remainder_num2 = 0, remainder_result = 0;
+char op = 0, reroll = 0, calculationType = 0;
+FILE* prrecord = fopen("calculation_record.txt", "a");
+char buffer[MAX] = { 0, };
 enum {
     BLACK,
     DARK_BLUE,
@@ -32,8 +33,6 @@ enum {
 void clearBuffer() {
     while (getchar() != '\n');
 }
-FILE* prrecord = fopen("calculation_record.txt", "a");
-char buffer[MAX] = { 0, };
 long long getInt64Input(const char* message) { //정수연산입력용
     long long input1;
     printf("%s", message);
@@ -48,36 +47,39 @@ long double getDoubleInput(const char* message) { //실수연산입력용
     clearBuffer();
     return input2;
 }
-int getIntInput(const char* message) {
+int getIntInput(const char* message) { //나머지연산입력용
     int input;
     printf("%s", message);
     scanf("%d", &input);
     clearBuffer();
     return input;
 }
-char getCharInput(const char* message) {
+char getCharInput(const char* message) { //연산자입력용
     char input0;
     printf("%s", message);
     scanf(" %c", &input0);
     clearBuffer();
     return input0;
 }
-void SaveRusultPrint() {
-    prrecord = fopen("calculation_record.txt", "r");
-    fread(buffer, 1, MAX, prrecord);
+void SaveRusultPrint() { //계산기록출력
+   
+    fread(buffer, 10, MAX, prrecord);
     printf("계산기록\n");
     printf("%s\n", buffer);
     fclose(prrecord);
 }
-void printWelcomeMessage() {
+void printWelcomeMessage() { //시작부분
     system("color 7");
     SetConsoleTitle(TEXT("C Language arithmetic calculator"));
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLUE);
     printf("사칙연산 계산기 입니다\n");
-    printf("정수연산은 '1'을, 실수연산은 '2'를,나머지연산은 '3'을 입력해주세요\n(나머지 연산은 정수만 지원합니다)\n연산을 할 때 입력 해야 하는 숫자는 총 4개입니다");
+    printf("정수연산은 '1'을, 실수연산은 '2'를,나머지연산은 '3'을,계산기록은 '4'를 입력해주세요\n(나머지 연산은 정수만 지원합니다)\n연산을 할 때 입력 해야 하는 숫자는 총 4개입니다");
     prrecord = fopen("calculation_record.txt", "a");
     fclose(prrecord);
-    printf("\n계산기록은 연산을 선택하는 화면에서 'list'명령어를 사용해주세요\n------------------\n");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+    printf("\n계산기록이 지나치게 많을 경우 굉장히 많은 문자가 출력될 수있습니다!\n");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLUE);
+    printf("------------------\n");
     Sleep(100);
 }
 int main() {
@@ -88,7 +90,7 @@ int main() {
     unsigned char  msync = 1, dsync = 1, rsync = 1;
     while (true) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);
-        printf("정수연산:1/실수연산:2/나머지연산:3\n");
+        printf("정수연산:1/실수연산:2/나머지연산:3/계산기록:4\n");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
         scanf_s("%d", &calculationType);
         if (calculationType == 1) {
@@ -274,8 +276,8 @@ int main() {
                 else {
                 danger_after_minus_2:
                     result2 = f1 - f2 - f3 - f4;
-                    printf("계산결과는 '%lf'입니다\n", result1);
-                    fprintf(prrecord, "%lf\n", result1);
+                    printf("계산결과는 '%lf'입니다\n", result2);
+                    fprintf(prrecord, "%lf\n", result2);
                     Sleep(1000);
                     rerollerror_fl_ma: //Reroll Error Float Minus
                     reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
@@ -361,7 +363,7 @@ int main() {
                         printf("------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         reroll = 0;
-                        goto rerollerror_float_d;//Reroll Error Float Division
+                        goto rerollerror_float_d; //Reroll Error Float Division
                     }
                 }
 
@@ -371,7 +373,7 @@ int main() {
                 if (calculationType == 3) {
                     if (rsync == 1) {
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                        printf("------------------\n나머지연산은 첫째와 두째 숫자 차례대로 계산됩니다\n양수 정수값을 입력할것을 권장합니다\nEx)[숫자1] %% [숫자2]\n------------------\n");
+                        printf("------------------\n나머지연산은 첫째와 둘째 숫자 차례대로 계산됩니다\n양수 정수값을 입력할것을 권장합니다\nEx)[숫자1] %% [숫자2]\n------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         rsync++;
                         goto danger_after_reminder;
@@ -381,14 +383,14 @@ int main() {
                         remainder_num1 = getIntInput("첫번째 숫자를 입력해주세요: ");
                         remainder_num2 = getIntInput("두번째 숫자를 입력해주세요: ");      
                         Sleep(1000);
-                        remainder_result1 = remainder_num1 % remainder_num2;
-                        printf("계산결과는 '%d'입니다\n", remainder_num1);
-                        fprintf(prrecord, "%d", remainder_result1);
+                        remainder_result = remainder_num1 % remainder_num2;
+                        printf("계산결과는 '%d'입니다\n", remainder_result);
+                        fprintf(prrecord, "%d", remainder_result);
                         Sleep(1000);
-                        rerollerror_Remainder://Reroll Error Remainder
+                        rerollerror_Remainder: //Reroll Error Remainder
                         reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
                         if (reroll == 'Y') {
-                            remainder_num1 = 0, remainder_num2 = 0, remainder_result1 = 0;
+                            remainder_num1 = 0, remainder_num2 = 0, remainder_result = 0;
                             calculationType = 0, op = 0, reroll = 0;
                             continue;
                         }
@@ -404,12 +406,38 @@ int main() {
                             printf("------------------\n");
                             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                             reroll = 0;
-                            goto rerollerror_float_d;//Reroll Error Float Division
+                            goto rerollerror_Remainder; //Reroll Error Float Division
                         }
                     }
                 }
+                if (calculationType = 4) {
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                    printf("------------------\n계산기록 초기화는 \'calculation_record.txt\' 파일을 찾아 직접 삭제하거나 \'clear\' 명령어를 사용해주세요\n------------------\n");
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                    fread(buffer, 11, MAX, prrecord);
+                    printf("계산기록\n");
+                    printf("%s\n", buffer);
+                    rerollerror_list:
+                    reroll = getCharInput("계속하시겠습니까?[Y/N]: ");
+                    if (reroll == 'Y') {
+                        calculationType = 0;
+                        continue;
+                    }
+                    else if (reroll == 'N') {
+                        printf("프로그램을 종료합니다\n");
+                        fclose(prrecord);
+                        exit(0);
+                    }
+                    else {
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                        printf("------------------\n");
+                        printf("잘못된 값을 입력하셨습니다\n'Y'또는'N'를 입력해주세요\n(반드시 대문자 N,Y를 입력해주세요)\n");
+                        printf("------------------\n");
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                        reroll = 0;
+                        goto rerollerror_list; //Reroll Error List
+                    }
                 }
-            
+                }
         return 0;
-        }
-    
+        }   
