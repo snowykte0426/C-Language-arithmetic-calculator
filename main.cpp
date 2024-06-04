@@ -1,17 +1,22 @@
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <Windows.h>
 #include <fcntl.h>
 #include <string.h>
+
 #define MAX 11
+
 long long result1 = 0, n1 = 0, n2 = 0, n3 = 0, n4 = 0;
 long double result2 = 0, f1 = 0, f2 = 0, f3 = 0, f4 = 0;
 int remainder_num1 = 0, remainder_num2 = 0, remainder_result = 0;
 char op = 0, reroll = 0, calculationType = 0;
-FILE* prrecord = fopen("calculation_record.txt", "a");
 char buffer[MAX] = { 0, };
+
+FILE* prrecord = fopen("calculation_record.txt", "a");
+
 enum {
     BLACK,
     DARK_BLUE,
@@ -30,58 +35,66 @@ enum {
     YELLOW,
     WHITE,
 };
+
 void clearBuffer() {
     while (getchar() != '\n');
 }
-long long getInt64Input(const char* message) { //Á¤¼ö¿¬»êÀÔ·Â¿ë
+
+long long getInt64Input(const char* message) { //ì •ìˆ˜ì—°ì‚°ì…ë ¥ìš©
     long long input1;
     printf("%s", message);
     scanf("%lld", &input1);
     clearBuffer();
     return input1;
 }
-long double getDoubleInput(const char* message) { //½Ç¼ö¿¬»êÀÔ·Â¿ë
+
+long double getDoubleInput(const char* message) { //ì‹¤ìˆ˜ì—°ì‚°ì…ë ¥ìš©
     long double input2;
     printf("%s", message);
     scanf("%lf", &input2);
     clearBuffer();
     return input2;
 }
-int getIntInput(const char* message) { //³ª¸ÓÁö¿¬»êÀÔ·Â¿ë
+
+int getIntInput(const char* message) { //ë‚˜ë¨¸ì§€ì—°ì‚°ì…ë ¥ìš©
     int input;
     printf("%s", message);
     scanf("%d", &input);
     clearBuffer();
     return input;
 }
-char getCharInput(const char* message) { //¿¬»êÀÚÀÔ·Â¿ë
+
+char getCharInput(const char* message) { //ì—°ì‚°ìì…ë ¥ìš©
     char input0;
     printf("%s", message);
     scanf(" %c", &input0);
     clearBuffer();
     return input0;
 }
-void SaveRusultPrint() { //°è»ê±â·ÏÃâ·Â
+
+void SaveRusultPrint() { //ê³„ì‚°ê¸°ë¡ì¶œë ¥
    
     fread(buffer, 10, MAX, prrecord);
-    printf("°è»ê±â·Ï\n");
+    printf("ê³„ì‚°ê¸°ë¡\n");
     printf("%s\n", buffer);
     fclose(prrecord);
 }
-void printWelcomeMessage() { //½ÃÀÛºÎºĞ
+
+void printWelcomeMessage() { //ì‹œì‘ë¶€ë¶„
     system("color 7");
     SetConsoleTitle(TEXT("C Language arithmetic calculator"));
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLUE);
-    printf("»çÄ¢¿¬»ê °è»ê±â ÀÔ´Ï´Ù\n");
-    printf("Á¤¼ö¿¬»êÀº '1'À», ½Ç¼ö¿¬»êÀº '2'¸¦,³ª¸ÓÁö¿¬»êÀº '3'À»,°è»ê±â·ÏÀº '4'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(³ª¸ÓÁö ¿¬»êÀº Á¤¼ö¸¸ Áö¿øÇÕ´Ï´Ù)\n¿¬»êÀ» ÇÒ ¶§ ÀÔ·Â ÇØ¾ß ÇÏ´Â ¼ıÀÚ´Â ÃÑ 4°³ÀÔ´Ï´Ù");
+    printf("ì‚¬ì¹™ì—°ì‚° ê³„ì‚°ê¸° ì…ë‹ˆë‹¤\n");
+    printf("ì •ìˆ˜ì—°ì‚°ì€ '1'ì„, ì‹¤ìˆ˜ì—°ì‚°ì€ '2'ë¥¼,ë‚˜ë¨¸ì§€ì—°ì‚°ì€ '3'ì„,ê³„ì‚°ê¸°ë¡ì€ '4'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë‚˜ë¨¸ì§€ ì—°ì‚°ì€ ì •ìˆ˜ë§Œ ì§€ì›í•©ë‹ˆë‹¤)\nì—°ì‚°ì„ í•  ë•Œ ì…ë ¥ í•´ì•¼ í•˜ëŠ” ìˆ«ìëŠ” ì´ 4ê°œì…ë‹ˆë‹¤");
     prrecord = fopen("calculation_record.txt", "a");
     fclose(prrecord);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-    printf("\n°è»ê±â·ÏÀÌ Áö³ªÄ¡°Ô ¸¹À» °æ¿ì ±²ÀåÈ÷ ¸¹Àº ¹®ÀÚ°¡ Ãâ·ÂµÉ ¼öÀÖ½À´Ï´Ù!\n");
+    printf("\nê³„ì‚°ê¸°ë¡ì´ ì§€ë‚˜ì¹˜ê²Œ ë§ì„ ê²½ìš° êµ‰ì¥íˆ ë§ì€ ë¬¸ìê°€ ì¶œë ¥ë  ìˆ˜ìˆìŠµë‹ˆë‹¤!\n");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLUE);
     printf("------------------\n");
     Sleep(100);
 }
+
 int main() {
     printWelcomeMessage();
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
@@ -90,37 +103,37 @@ int main() {
     unsigned char  msync = 1, dsync = 1, rsync = 1;
     while (true) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);
-        printf("Á¤¼ö¿¬»ê:1/½Ç¼ö¿¬»ê:2/³ª¸ÓÁö¿¬»ê:3/°è»ê±â·Ï:4\n");
+        printf("ì •ìˆ˜ì—°ì‚°:1/ì‹¤ìˆ˜ì—°ì‚°:2/ë‚˜ë¨¸ì§€ì—°ì‚°:3/ê³„ì‚°ê¸°ë¡:4\n");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
         scanf_s("%d", &calculationType);
         if (calculationType == 1) {
-            n1 = getInt64Input("Ã¹ ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ");
-            n2 = getInt64Input("µÎ ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ");
-            n3 = getInt64Input("¼¼ ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ");
-            n4 = getInt64Input("³× ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ");
-            op = getCharInput("¿¬»êÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä (+, -, *, /): ");
+            n1 = getInt64Input("ì²« ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•˜ì„¸ìš”: ");
+            n2 = getInt64Input("ë‘ ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•˜ì„¸ìš”: ");
+            n3 = getInt64Input("ì„¸ ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•˜ì„¸ìš”: ");
+            n4 = getInt64Input("ë„¤ ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•˜ì„¸ìš”: ");
+            op = getCharInput("ì—°ì‚°ìë¥¼ ì…ë ¥í•˜ì„¸ìš” (+, -, *, /): ");
             switch (op) {
             case '+': {
                 result1 = n1 + n2 + n3 + n4;
-                printf("°è»ê°á°ú´Â '%d'ÀÔ´Ï´Ù\n", result1);
+                printf("ê³„ì‚°ê²°ê³¼ëŠ” '%d'ì…ë‹ˆë‹¤\n", result1);
                 fprintf(prrecord, "%d\n", result1);
                 Sleep(1000);
                 rerollerror_num_p://Reroll Error Number Plus
-                reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                 if (reroll == 'Y') {
                     n1 = 0, n2 = 0, n3 = 0, n4 = 0, result1 = 0;
                     calculationType = 0, op = 0, reroll = 0;
                     continue;
                 }
                 else if (reroll == 'N') {
-                    printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                    printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                     fclose(prrecord);
                     exit(0);
                 }
                 else {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                     printf("------------------\n");
-                    printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                    printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                     printf("------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     reroll = 0;
@@ -130,7 +143,7 @@ int main() {
             case '-': {
                 if (msync == 1) {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                    printf("------------------\n»¬¼ÀÀº Ã¹¹øÂ° ¼ıÀÚºÎÅÍ ³×¹øÂ° ¼ıÀÚ±îÁö Â÷·Ê´ë·Î °è»êµË´Ï´Ù\nEx)[¼ıÀÚ1] - [¼ıÀÚ2] - [¼ıÀÚ3] - [¼ıÀÚ4]\n------------------\n");
+                    printf("------------------\nëº„ì…ˆì€ ì²«ë²ˆì§¸ ìˆ«ìë¶€í„° ë„¤ë²ˆì§¸ ìˆ«ìê¹Œì§€ ì°¨ë¡€ëŒ€ë¡œ ê³„ì‚°ë©ë‹ˆë‹¤\nEx)[ìˆ«ì1] - [ìˆ«ì2] - [ìˆ«ì3] - [ìˆ«ì4]\n------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     msync++;
                     goto danger_after_minus;
@@ -138,25 +151,25 @@ int main() {
                 else {
                     danger_after_minus:
                     result1 = n1 - n2 - n3 - n4;
-                    printf("°è»ê°á°ú´Â '%d'ÀÔ´Ï´Ù\n", result1);
+                    printf("ê³„ì‚°ê²°ê³¼ëŠ” '%d'ì…ë‹ˆë‹¤\n", result1);
                     fprintf(prrecord, "%d\n", result1);
                     Sleep(1000);
                     rerollerror_num_ma: //Reroll Error Number Minus
-                    reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                    reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                     if (reroll == 'Y') {
                         n1 = 0, n2 = 0, n3 = 0, n4 = 0, result1 = 0;
                         calculationType = 0, op = 0, reroll = 0;
                         continue;
                     }
                     else if (reroll == 'N') {
-                        printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                        printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                         fclose(prrecord);
                         exit(0);
                     }
                     else {
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                         printf("------------------\n");
-                        printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                        printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                         printf("------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         reroll = 0;
@@ -167,25 +180,25 @@ int main() {
             }
             case '*': {
                 result1 = n1 * n2 * n3 * n4;
-                printf("°è»ê°á°ú´Â '%d'ÀÔ´Ï´Ù\n", result1);
+                printf("ê³„ì‚°ê²°ê³¼ëŠ” '%d'ì…ë‹ˆë‹¤\n", result1);
                 fprintf(prrecord, "%d\n", result1);
                 Sleep(1000);
                 rerollerror_num_mu://Reroll Error Number Multiplication
-                reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                 if (reroll == 'Y') {
                     n1 = 0, n2 = 0, n3 = 0, n4 = 0, result1 = 0;
                     calculationType = 0, op = 0, reroll = 0;
                     continue;
                 }
                 else if (reroll == 'N') {
-                    printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                    printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                     fclose(prrecord);
                     exit(0);
                 }
                 else {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                     printf("------------------\n");
-                    printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                    printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                     printf("------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     reroll = 0;
@@ -195,7 +208,7 @@ int main() {
             case'/': {
                 if (dsync == 1) {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                    printf("------------------\n³ª´°¼ÀÀº Ã¹¹øÂ° ¼ıÀÚºÎÅÍ ³×¹øÂ° ¼ıÀÚ±îÁö Â÷·Ê´ë·Î °è»êµË´Ï´Ù\nEx)[¼ıÀÚ1] ¡À [¼ıÀÚ2] ¡À [¼ıÀÚ3] ¡À [¼ıÀÚ4]\n------------------\n");
+                    printf("------------------\në‚˜ëˆ—ì…ˆì€ ì²«ë²ˆì§¸ ìˆ«ìë¶€í„° ë„¤ë²ˆì§¸ ìˆ«ìê¹Œì§€ ì°¨ë¡€ëŒ€ë¡œ ê³„ì‚°ë©ë‹ˆë‹¤\nEx)[ìˆ«ì1] Ã· [ìˆ«ì2] Ã· [ìˆ«ì3] Ã· [ìˆ«ì4]\n------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     dsync++;
                     goto danger_after_division;
@@ -203,25 +216,25 @@ int main() {
                 else {
                     danger_after_division:
                     result1 = n1 / n2 / n3 / n4;
-                    printf("°è»ê°á°ú´Â '%d'ÀÔ´Ï´Ù\n", result1);
+                    printf("ê³„ì‚°ê²°ê³¼ëŠ” '%d'ì…ë‹ˆë‹¤\n", result1);
                     fprintf(prrecord, "%d\n", result1);
                     Sleep(1000);
                     rerollerror_num_d://Reroll Error Number Division
-                    reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                    reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                     if (reroll == 'Y') {
                         n1 = 0, n2 = 0, n3 = 0, n4 = 0, result1 = 0;
                         calculationType = 0, op = 0, reroll = 0;
                         continue;
                     }
                     else if (reroll == 'N') {
-                        printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                        printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                         fclose(prrecord);
                         exit(0);
                     }
                     else {
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                         printf("------------------\n");
-                        printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                        printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                         printf("------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         reroll = 0;
@@ -232,33 +245,33 @@ int main() {
             }
         }
         if (calculationType == 2) {
-            f1 = getDoubleInput("Ã¹ ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ");
-            f2 = getDoubleInput("µÎ ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ");
-            f3 = getDoubleInput("¼¼ ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ");
-            f4 = getDoubleInput("³× ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ");
-            op = getCharInput("¿¬»êÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä (+, -, *, /): ");
+            f1 = getDoubleInput("ì²« ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•˜ì„¸ìš”: ");
+            f2 = getDoubleInput("ë‘ ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•˜ì„¸ìš”: ");
+            f3 = getDoubleInput("ì„¸ ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•˜ì„¸ìš”: ");
+            f4 = getDoubleInput("ë„¤ ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•˜ì„¸ìš”: ");
+            op = getCharInput("ì—°ì‚°ìë¥¼ ì…ë ¥í•˜ì„¸ìš” (+, -, *, /): ");
             switch (op) {
             case '+': {
                 result2 = f1 + f2 + f3 + f4;
-                printf("°è»ê°á°ú´Â '%lf'ÀÔ´Ï´Ù\n", result2);
+                printf("ê³„ì‚°ê²°ê³¼ëŠ” '%lf'ì…ë‹ˆë‹¤\n", result2);
                 fprintf(prrecord, "%lf\n", result2);
                 Sleep(1000);
                 rerollerror_fl_p://Reroll Error Float Plus
-                reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                 if (reroll == 'Y') {
                     f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
                     calculationType = 0, op = 0, reroll = 0;
                     continue;
                 }
                 else if (reroll == 'N') {
-                    printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                    printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                     fclose(prrecord);
                     exit(0);
                 }
                 else {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                     printf("------------------\n");
-                    printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                    printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                     printf("------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     reroll = 0;
@@ -268,7 +281,7 @@ int main() {
             case '-': {
                 if (msync == 1) {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                    printf("------------------\n»¬¼ÀÀº Ã¹¹øÂ° ¼ıÀÚºÎÅÍ ³×¹øÂ° ¼ıÀÚ±îÁö Â÷·Ê´ë·Î °è»êµË´Ï´Ù\nEx)[¼ıÀÚ1] - [¼ıÀÚ2] - [¼ıÀÚ3] - [¼ıÀÚ4]\n------------------\n");
+                    printf("------------------\nëº„ì…ˆì€ ì²«ë²ˆì§¸ ìˆ«ìë¶€í„° ë„¤ë²ˆì§¸ ìˆ«ìê¹Œì§€ ì°¨ë¡€ëŒ€ë¡œ ê³„ì‚°ë©ë‹ˆë‹¤\nEx)[ìˆ«ì1] - [ìˆ«ì2] - [ìˆ«ì3] - [ìˆ«ì4]\n------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     msync++;
                     goto danger_after_minus_2;
@@ -276,25 +289,25 @@ int main() {
                 else {
                 danger_after_minus_2:
                     result2 = f1 - f2 - f3 - f4;
-                    printf("°è»ê°á°ú´Â '%lf'ÀÔ´Ï´Ù\n", result2);
+                    printf("ê³„ì‚°ê²°ê³¼ëŠ” '%lf'ì…ë‹ˆë‹¤\n", result2);
                     fprintf(prrecord, "%lf\n", result2);
                     Sleep(1000);
                     rerollerror_fl_ma: //Reroll Error Float Minus
-                    reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                    reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                     if (reroll == 'Y') {
                         f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
                         calculationType = 0, op = 0, reroll = 0;
                         continue;
                     }
                     else if (reroll == 'N') {
-                        printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                        printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                         fclose(prrecord);
                         exit(0);
                     }
                     else {
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                         printf("------------------\n");
-                        printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                        printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                         printf("------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         reroll = 0;
@@ -305,25 +318,25 @@ int main() {
             }
             case '*': {
                 result2 = f1 * f2 * f3 * f4;
-                printf("°è»ê°á°ú´Â '%lf'ÀÔ´Ï´Ù\n", result2);
+                printf("ê³„ì‚°ê²°ê³¼ëŠ” '%lf'ì…ë‹ˆë‹¤\n", result2);
                 fprintf(prrecord, "%lf\n", result1);
                 Sleep(1000);
                 rerollerror_float_mu://Reroll Error Float Multiplication
-                reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                 if (reroll == 'Y') {
                     f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
                     calculationType = 0, op = 0, reroll = 0;
                     continue;
                 }
                 else if (reroll == 'N') {
-                    printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                    printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                     fclose(prrecord);
                     exit(0);
                 }
                 else {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                     printf("------------------\n");
-                    printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                    printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                     printf("------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     reroll = 0;
@@ -333,7 +346,7 @@ int main() {
             case'/': {
                 if (dsync == 1) {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                    printf("------------------\n³ª´°¼ÀÀº Ã¹¹øÂ° ¼ıÀÚºÎÅÍ ³×¹øÂ° ¼ıÀÚ±îÁö Â÷·Ê´ë·Î °è»êµË´Ï´Ù\nEx)[¼ıÀÚ1] ¡À [¼ıÀÚ2] ¡À [¼ıÀÚ3] ¡À [¼ıÀÚ4]\n------------------\n");
+                    printf("------------------\në‚˜ëˆ—ì…ˆì€ ì²«ë²ˆì§¸ ìˆ«ìë¶€í„° ë„¤ë²ˆì§¸ ìˆ«ìê¹Œì§€ ì°¨ë¡€ëŒ€ë¡œ ê³„ì‚°ë©ë‹ˆë‹¤\nEx)[ìˆ«ì1] Ã· [ìˆ«ì2] Ã· [ìˆ«ì3] Ã· [ìˆ«ì4]\n------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     dsync++;
                     goto danger_after_division_2;
@@ -341,25 +354,25 @@ int main() {
                 else {
                     danger_after_division_2:
                     result2 = f1 / f2 / f3 / f4;
-                    printf("°è»ê°á°ú´Â '%lf'ÀÔ´Ï´Ù\n", result2);
+                    printf("ê³„ì‚°ê²°ê³¼ëŠ” '%lf'ì…ë‹ˆë‹¤\n", result2);
                     fprintf(prrecord, "%lf\n", result2);
                     Sleep(1000);
                     rerollerror_float_d://Reroll Error Float Division
-                    reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                    reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                     if (reroll == 'Y') {
                         f1 = 0, f2 = 0, f3 = 0, f4 = 0, result2 = 0;
                         calculationType = 0, op = 0, reroll = 0;
                         continue;
                     }
                     else if (reroll == 'N') {
-                        printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                        printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                         fclose(prrecord);
                         exit(0);
                     }
                     else {
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                         printf("------------------\n");
-                        printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                        printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                         printf("------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         reroll = 0;
@@ -373,36 +386,36 @@ int main() {
                 if (calculationType == 3) {
                     if (rsync == 1) {
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                        printf("------------------\n³ª¸ÓÁö¿¬»êÀº Ã¹Â°¿Í µÑÂ° ¼ıÀÚ Â÷·Ê´ë·Î °è»êµË´Ï´Ù\n¾ç¼ö Á¤¼ö°ªÀ» ÀÔ·ÂÇÒ°ÍÀ» ±ÇÀåÇÕ´Ï´Ù\nEx)[¼ıÀÚ1] %% [¼ıÀÚ2]\n------------------\n");
+                        printf("------------------\në‚˜ë¨¸ì§€ì—°ì‚°ì€ ì²«ì§¸ì™€ ë‘˜ì§¸ ìˆ«ì ì°¨ë¡€ëŒ€ë¡œ ê³„ì‚°ë©ë‹ˆë‹¤\nì–‘ìˆ˜ ì •ìˆ˜ê°’ì„ ì…ë ¥í• ê²ƒì„ ê¶Œì¥í•©ë‹ˆë‹¤\nEx)[ìˆ«ì1] %% [ìˆ«ì2]\n------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         rsync++;
                         goto danger_after_reminder;
                     }
                     else {
                         danger_after_reminder:
-                        remainder_num1 = getIntInput("Ã¹¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
-                        remainder_num2 = getIntInput("µÎ¹øÂ° ¼ıÀÚ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");      
+                        remainder_num1 = getIntInput("ì²«ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”: ");
+                        remainder_num2 = getIntInput("ë‘ë²ˆì§¸ ìˆ«ìë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”: ");      
                         Sleep(1000);
                         remainder_result = remainder_num1 % remainder_num2;
-                        printf("°è»ê°á°ú´Â '%d'ÀÔ´Ï´Ù\n", remainder_result);
+                        printf("ê³„ì‚°ê²°ê³¼ëŠ” '%d'ì…ë‹ˆë‹¤\n", remainder_result);
                         fprintf(prrecord, "%d", remainder_result);
                         Sleep(1000);
                         rerollerror_Remainder: //Reroll Error Remainder
-                        reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                        reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                         if (reroll == 'Y') {
                             remainder_num1 = 0, remainder_num2 = 0, remainder_result = 0;
                             calculationType = 0, op = 0, reroll = 0;
                             continue;
                         }
                         else if (reroll == 'N') {
-                            printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                            printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                             fclose(prrecord);
                             exit(0);
                         }
                         else {
                             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                             printf("------------------\n");
-                            printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                            printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                             printf("------------------\n");
                             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                             reroll = 0;
@@ -412,26 +425,26 @@ int main() {
                 }
                 if (calculationType = 4) {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-                    printf("------------------\n°è»ê±â·Ï ÃÊ±âÈ­´Â \'calculation_record.txt\' ÆÄÀÏÀ» Ã£¾Æ Á÷Á¢ »èÁ¦ÇÏ°Å³ª \'clear\' ¸í·É¾î¸¦ »ç¿ëÇØÁÖ¼¼¿ä\n------------------\n");
+                    printf("------------------\nê³„ì‚°ê¸°ë¡ ì´ˆê¸°í™”ëŠ” \'calculation_record.txt\' íŒŒì¼ì„ ì°¾ì•„ ì§ì ‘ ì‚­ì œí•˜ê±°ë‚˜ \'clear\' ëª…ë ¹ì–´ë¥¼ ì‚¬ìš©í•´ì£¼ì„¸ìš”\n------------------\n");
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                     fread(buffer, 11, MAX, prrecord);
-                    printf("°è»ê±â·Ï\n");
+                    printf("ê³„ì‚°ê¸°ë¡\n");
                     printf("%s\n", buffer);
                     rerollerror_list:
-                    reroll = getCharInput("°è¼ÓÇÏ½Ã°Ú½À´Ï±î?[Y/N]: ");
+                    reroll = getCharInput("ê³„ì†í•˜ì‹œê² ìŠµë‹ˆê¹Œ?[Y/N]: ");
                     if (reroll == 'Y') {
                         calculationType = 0;
                         continue;
                     }
                     else if (reroll == 'N') {
-                        printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù\n");
+                        printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤\n");
                         fclose(prrecord);
                         exit(0);
                     }
                     else {
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                         printf("------------------\n");
-                        printf("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù\n'Y'¶Ç´Â'N'¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä\n(¹İµå½Ã ´ë¹®ÀÚ N,Y¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä)\n");
+                        printf("ì˜ëª»ëœ ê°’ì„ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤\n'Y'ë˜ëŠ”'N'ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”\n(ë°˜ë“œì‹œ ëŒ€ë¬¸ì N,Yë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”)\n");
                         printf("------------------\n");
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
                         reroll = 0;
@@ -440,4 +453,5 @@ int main() {
                 }
                 }
         return 0;
-        }   
+        }
+}
